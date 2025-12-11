@@ -35,10 +35,11 @@ def generate_document():
 
         # 2. Load Template Word
         # Pastikan file 'template_pln.docx' ada di folder yang sama dengan app.py
-        template_path = "Template_surat.docx"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        template_path = os.path.join(script_dir, "Template_surat.docx")
         
         if not os.path.exists(template_path):
-            return jsonify({"error": "File template_pln.docx tidak ditemukan di server!"}), 500
+            return jsonify({"error": f"File template tidak ditemukan di: {template_path}"}), 500
 
         doc = DocxTemplate(template_path)
 
