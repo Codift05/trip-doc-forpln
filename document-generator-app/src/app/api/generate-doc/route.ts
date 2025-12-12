@@ -1,4 +1,4 @@
-// app/api/generate/route.ts
+// app/api/generate-doc/route.ts
 
 import { NextResponse } from "next/server";
 import axios from "axios";
