@@ -1,0 +1,13 @@
+{
+  "buildCommand": "cd document-generator-app && npm install && npm run build",
+  "outputDirectory": "document-generator-app/.next",
+  "devCommand": "cd document-generator-app && npm run dev",
+  "installCommand": "cd document-generator-app && npm install",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/api/python/:path*",
+      "destination": "/api/:path*"
+    }
+  ]
+}
