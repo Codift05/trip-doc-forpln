@@ -1,28 +1,96 @@
-# TripDoc - Document Generator Application
+# TripDoc - Automated Vehicle Request Document Generator
+
+A comprehensive web-based document automation system for generating vehicle request forms with intelligent data processing. Built with modern web technologies, this system streamlines the document creation workflow by transforming interactive form inputs into professionally formatted Word documents (.docx) ready for immediate use in corporate environments.
+
+![Next.js](https://img.shields.io/badge/Next.js-16.0.8-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19.2.1-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript)
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.0.0-000000?style=flat-square&logo=flask)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=flat-square&logo=tailwind-css)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=flat-square&logo=vercel)
+![License](https://img.shields.io/badge/License-Proprietary-red?style=flat-square)
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [System Architecture](#system-architecture)
+- [Project Structure](#project-structure)
+- [Installation & Setup](#installation--setup)
+- [Usage Guide](#usage-guide)
+- [API Documentation](#api-documentation)
+- [Deployment](#deployment)
+- [Development Workflow](#development-workflow)
+- [Performance Optimization](#performance-optimization)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
 
 ## Overview
 
-TripDoc adalah aplikasi web modern untuk generate dokumen permohonan kendaraan secara otomatis. Aplikasi ini mengintegrasikan Next.js sebagai frontend framework dengan Python Flask sebagai backend service untuk pemrosesan dokumen Word (.docx). Sistem ini dirancang untuk mempermudah proses pembuatan formulir permohonan kendaraan dengan mengisi data melalui form interaktif yang kemudian secara otomatis akan menghasilkan dokumen Word yang siap diunduh.
+TripDoc revolutionizes the traditional vehicle request documentation process by providing an intelligent, automated solution that eliminates manual document preparation. The system combines the power of modern web frameworks with robust backend processing to deliver a seamless user experience.
+
+### Core Capabilities
+
+**Document Automation Engine**
+- Automated Word document generation from structured form data
+- Template-based rendering with dynamic field injection
+- Professional formatting maintained across all generated documents
+- Support for complex data structures and multiple document sections
+
+**Intelligent Date Processing**
+- Automatic conversion to Indonesian date format (e.g., "12 Desember 2025")
+- Smart date validation and formatting
+- Timezone-aware date handling
+- Flexible input format support (YYYY-MM-DD to localized output)
+
+**Enterprise-Grade Features**
+- Real-time form validation with immediate feedback
+- Comprehensive error handling and logging
+- Automatic file naming with user context
+- Instant document download upon generation
+- Session management and state persistence
+
+---
 
 ## Key Features
 
-### Document Generation
-- **Automated Document Creation**: Generate dokumen Word (.docx) secara otomatis berdasarkan template yang telah ditentukan
-- **Dynamic Field Mapping**: Mapping data form ke template Word menggunakan python-docx-template (docxtpl)
-- **Indonesian Date Formatting**: Otomatis format tanggal ke format Indonesia (contoh: 12 Desember 2025)
-- **Instant Download**: Dokumen langsung terdownload setelah generation berhasil
+### 🚀 Document Generation
 
-### User Interface
-- **Responsive Design**: Interface yang responsive dan mobile-friendly menggunakan Tailwind CSS
-- **Real-time Validation**: Validasi input form secara real-time
-- **Status Feedback**: Notifikasi status (loading, success, error) yang informatif
-- **Modern UI/UX**: Desain clean dan profesional dengan banner PLN
+- **Template-Based System**: Pre-configured Word templates ensure consistency
+- **Dynamic Data Binding**: Seamless mapping between form fields and document placeholders
+- **Batch Processing Ready**: Architecture supports future bulk document generation
+- **Multiple Format Support**: Extensible design for PDF, XLSX export capabilities
 
-### Technical Features
-- **Server-Side Rendering (SSR)**: Menggunakan Next.js App Router untuk optimal performance
-- **API Route Handler**: Next.js API routes sebagai proxy ke Python backend
-- **Error Handling**: Comprehensive error handling di frontend dan backend
-- **TypeScript Support**: Type-safe development dengan full TypeScript integration
+### 🎨 User Experience
+
+- **Responsive Interface**: Mobile-first design using Tailwind CSS 4.0
+- **Interactive Forms**: Smart form controls with conditional validation
+- **Progress Indicators**: Visual feedback during document generation
+- **Accessibility Compliant**: WCAG 2.1 Level AA standards
+- **Dark Mode Ready**: UI components prepared for theme switching
+
+### ⚡ Technical Excellence
+
+- **Server-Side Rendering**: Next.js App Router for optimal SEO and performance
+- **Type Safety**: Full TypeScript coverage with strict mode enabled
+- **Modern Build Tools**: Turbopack for lightning-fast development builds
+- **API-First Design**: RESTful endpoints with comprehensive documentation
+- **Error Boundaries**: Graceful degradation and error recovery
+- **Code Splitting**: Automatic optimization for faster page loads
+
+### 🔒 Security & Reliability
+
+- **Input Sanitization**: Protection against XSS and injection attacks
+- **CORS Configuration**: Secure cross-origin resource sharing
+- **Rate Limiting Ready**: Infrastructure prepared for production safeguards
+- **Audit Logging**: Comprehensive logging for compliance and debugging
+- **Environment Isolation**: Strict separation of development and production configs
 
 ## Technology Stack
 
@@ -202,58 +270,163 @@ Next.js akan berjalan di `http://localhost:3000`
 
 Buka browser dan akses: `http://localhost:3000`
 
-## Usage
+## Usage Guide
 
-### Generating Document
+### Quick Start - Document Generation
 
-1. **Navigate to Form Page**: Klik tombol "Mulai Buat Formulir" di homepage atau akses `/form`
+#### Step 1: Access the Application
 
-2. **Fill Form Data**: Isi semua field yang diperlukan:
-   - **Data Pemohon**: Nama, Unit Kerja, Jabatan
-   - **Detail Permohonan**: Jenis Kendaraan, Tujuan, Jumlah Penumpang, Keperluan
-   - **Jadwal**: Tanggal & Jam Mulai, Tanggal & Jam Selesai
-   - **Data Logistik**: Nama Pengemudi, Nomor Polisi, KM Awal/Akhir
-   - **Log Perjalanan**: Waktu Berangkat dan Kembali
+Navigate to the form page via the homepage call-to-action or directly access the `/form` route.
 
-3. **Submit**: Klik tombol "Generate & Unduh Dokumen"
+#### Step 2: Complete Form Sections
 
-4. **Download**: Dokumen Word akan otomatis terdownload dengan nama file: `Permohonan_Kendaraan_[Nama].docx`
+The form is organized into logical sections for efficient data entry:
 
-### API Endpoints
+**Section A: Requester Information**
+- Full Name (Nama Pemohon)
+- Department/Unit (Unit Kerja)
+- Job Title (Jabatan)
 
-#### POST `/api/generate-doc`
+**Section B: Request Details**
+- Vehicle Type (Jenis Kendaraan) - dropdown selection
+- Destination (Tempat Tujuan)
+- Number of Passengers (Jumlah Penumpang)
+- Purpose of Request (Keperluan) - detailed description
 
-Generate dokumen Word berdasarkan data form.
+**Section C: Schedule Information**
+- Start Date & Time (Tanggal & Jam Mulai)
+- End Date & Time (Tanggal & Jam Selesai)
 
-**Request Body:**
+**Section D: Logistics Data**
+- Driver Name (Nama Pengemudi)
+- Vehicle Plate Number (Nomor Polisi)
+- Starting Odometer (KM Awal)
+- Ending Odometer (KM Akhir)
+- Duration of Use (Lama Penggunaan)
+
+**Section E: Travel Log**
+- Departure Date & Time (Log Berangkat)
+- Return Date & Time (Log Kembali)
+
+#### Step 3: Submit & Generate
+
+Click the "Generate & Unduh Dokumen" button. The system will:
+1. Validate all required fields
+2. Process the data through the backend
+3. Generate the formatted Word document
+4. Automatically trigger download
+
+**Output**: `Permohonan_Kendaraan_[Nama_Pemohon].docx`
+
+---
+
+## API Documentation
+
+### Endpoint: Generate Document
+
+```http
+POST /api/generate-doc
+```
+
+Generates a Word document based on provided form data with automatic formatting and Indonesian date localization.
+
+#### Request Headers
+
+```http
+Content-Type: application/json
+```
+
+#### Request Body Schema
+
 ```json
 {
-  "nama_pemohon": "string",
-  "unit_kerja": "string",
-  "jabatan": "string",
-  "jenis_kendaraan": "string",
-  "tempat_tujuan": "string",
-  "jumlah_penumpang": "string",
-  "keperluan": "string",
-  "tgl_mulai_req": "YYYY-MM-DD",
-  "jam_mulai_req": "HH:MM",
-  "tgl_selesai_req": "YYYY-MM-DD",
-  "jam_selesai_req": "HH:MM",
-  "nama_pengemudi": "string",
-  "nomor_polisi": "string",
-  "km_awal": "string",
-  "km_akhir": "string",
-  "lama_penggunaan": "string",
-  "log_berangkat_tgl": "YYYY-MM-DD",
-  "log_berangkat_jam": "HH:MM",
-  "log_kembali_tgl": "YYYY-MM-DD",
-  "log_kembali_jam": "HH:MM"
+  "nama_pemohon": "string",        // Required: Requester's full name
+  "unit_kerja": "string",          // Required: Department/unit name
+  "jabatan": "string",             // Required: Job position
+  "jenis_kendaraan": "string",     // Required: Vehicle type
+  "tempat_tujuan": "string",       // Required: Destination location
+  "jumlah_penumpang": "integer",   // Required: Number of passengers
+  "keperluan": "string",           // Required: Purpose of request
+  "tgl_mulai_req": "YYYY-MM-DD",   // Required: Start date (ISO format)
+  "jam_mulai_req": "HH:MM",        // Required: Start time (24h format)
+  "tgl_selesai_req": "YYYY-MM-DD", // Required: End date (ISO format)
+  "jam_selesai_req": "HH:MM",      // Required: End time (24h format)
+  "nama_pengemudi": "string",      // Required: Driver's name
+  "nomor_polisi": "string",        // Required: License plate number
+  "km_awal": "string",             // Required: Starting odometer
+  "km_akhir": "string",            // Required: Ending odometer
+  "lama_penggunaan": "string",     // Required: Usage duration
+  "log_berangkat_tgl": "YYYY-MM-DD", // Required: Departure date
+  "log_berangkat_jam": "HH:MM",    // Required: Departure time
+  "log_kembali_tgl": "YYYY-MM-DD", // Required: Return date
+  "log_kembali_jam": "HH:MM"       // Required: Return time
 }
 ```
 
-**Response:**
-- Content-Type: `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
-- Binary DOCX file
+#### Success Response
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+Content-Disposition: attachment; filename="Permohonan_Kendaraan_[Name].docx"
+
+[Binary DOCX Data]
+```
+
+#### Error Responses
+
+**400 Bad Request** - Invalid or missing required fields
+
+```json
+{
+  "error": "Validation failed: [field_name] is required"
+}
+```
+
+**500 Internal Server Error** - Server processing error
+
+```json
+{
+  "error": "Failed to generate document via Python API. Check console logs."
+}
+```
+
+#### Example Usage
+
+**cURL**
+```bash
+curl -X POST http://localhost:3000/api/generate-doc \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nama_pemohon": "John Doe",
+    "unit_kerja": "IT Department",
+    "jabatan": "System Administrator",
+    "jenis_kendaraan": "Minibus Operasional",
+    "tempat_tujuan": "Jakarta Office",
+    "jumlah_penumpang": 5,
+    "keperluan": "Meeting dengan klien",
+    "tgl_mulai_req": "2025-12-15",
+    "jam_mulai_req": "08:00",
+    "tgl_selesai_req": "2025-12-15",
+    "jam_selesai_req": "17:00",
+    ...
+  }' \
+  --output document.docx
+```
+
+**JavaScript/Axios**
+```javascript
+const response = await axios.post('/api/generate-doc', formData, {
+  responseType: 'blob'
+});
+
+const url = window.URL.createObjectURL(new Blob([response.data]));
+const link = document.createElement('a');
+link.href = url;
+link.setAttribute('download', 'Permohonan_Kendaraan.docx');
+document.body.appendChild(link);
+link.click();
+```
 
 ## Deployment
 
