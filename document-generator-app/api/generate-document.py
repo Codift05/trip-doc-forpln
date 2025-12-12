@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify
+from http.server import BaseHTTPRequestHandler
 from docxtpl import DocxTemplate
 from datetime import datetime
+import json
 import io
 import os
 import base64
-
-app = Flask(__name__)
 
 # Helper: Format Tanggal Indonesia
 def format_tanggal_indo(date_str):
@@ -21,20 +20,22 @@ def format_tanggal_indo(date_str):
     except ValueError:
         return date_str
 
-def handler(environ, start_response):
-    """Vercel Serverless Function Handler"""
-    with app.request_context(environ):
+class handler(BaseHTTPRequestHandler):
+    def do_POST(self):
         try:
-            # 1. Terima Data dari Next.js
-            data = request.json
+            # 1. Read request body
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode('utf-8'))
             
             # 2. Load Template Word
-            # Di Vercel, gunakan path relatif dari root project
+            # Di Vercel, path dari root project
             script_dir = os.path.dirname(os.path.abspath(__file__))
             template_path = os.path.join(script_dir, "..", "Python_Backend", "Template_surat.docx")
             
             if not os.path.exists(template_path):
-                return jsonify({"error": f"File template tidak ditemukan di: {template_path}"}), 500
+                self.send_error_response(f"File template tidak ditemukan di: {template_path}")
+                return
 
             doc = DocxTemplate(template_path)
 
@@ -76,15 +77,25 @@ def handler(environ, start_response):
             
             filename = f"Permohonan_Kendaraan_{data.get('nama_pemohon', 'User')}.docx"
             
-            response = jsonify({
+            response_data = {
                 "success": True,
                 "file": file_base64,
                 "filename": filename,
                 "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            })
+            }
             
-            return response(environ, start_response)
+            # Send response
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(response_data).encode('utf-8'))
 
         except Exception as e:
-            error_response = jsonify({"error": str(e)})
-            return error_response(environ, start_response)
+            self.send_error_response(str(e))
+
+    def send_error_response(self, error_message):
+        self.send_response(500)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        error_data = {"error": error_message}
+        self.wfile.write(json.dumps(error_data).encode('utf-8'))
