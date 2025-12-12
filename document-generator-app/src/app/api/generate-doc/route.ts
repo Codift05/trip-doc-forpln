@@ -1,85 +1,73 @@
-// app/api/generate-doc/route.ts
+// app/api/generate/route.ts
 
 import { NextResponse } from "next/server";
+import axios from "axios";
 
-// Support both local development and production
-const PYTHON_API_URL = 
-  process.env.PYTHON_API_URL || 
-  (process.env.NODE_ENV === 'production' 
-    ? '/api/python/generate-document' 
-    : 'http://localhost:5000/generate-document');
+// Pastikan ini sesuai dengan port Flask Anda
+const PYTHON_API_URL = "http://127.0.0.1:8000/generate-document";
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    // Call Python Backend (Local Flask or Vercel Serverless Function)
-    const pythonResponse = await fetch(PYTHON_API_URL, {
-      method: 'POST',
+    // Panggil Backend Python (Flask)
+    const pythonResponse = await axios.post(PYTHON_API_URL, data, {
+      responseType: "arraybuffer", // Menerima data biner (file DOCX)
+      // Penting: Pastikan header Content-Type diatur sesuai kebutuhan Flask
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
     });
 
-    if (!pythonResponse.ok) {
-      const errorData = await pythonResponse.json();
-      throw new Error(errorData.error || 'Python API error');
-    }
+    // 1. Kesalahan: Variabel docData dideklarasikan dua kali. Kita hanya butuh satu.
+    const docData = pythonResponse.data;
 
-    const responseData = await pythonResponse.json();
-
-    // Check if response contains base64 file (Vercel serverless format)
-    if (responseData.file && responseData.filename) {
-      // Decode base64 to binary
-      const fileBuffer = Buffer.from(responseData.file, 'base64');
-
-      // Set headers for file download
-      const headers = new Headers();
-      headers.set(
-        "Content-Type",
-        responseData.mimetype || "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      );
-      headers.set(
-        "Content-Disposition",
-        `attachment; filename="${responseData.filename}"`
-      );
-
-      return new Response(fileBuffer, {
-        status: 200,
-        headers: headers,
-      });
-    }
-
-    // Fallback for direct binary response (local Flask)
-    const arrayBuffer = await pythonResponse.arrayBuffer();
+    // Siapkan Headers untuk Respons Next.js
     const headers = new Headers();
-    
+
+    // Atur Content-Type untuk file DOCX
     headers.set(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     );
-    
-    const contentDisposition = pythonResponse.headers.get("content-disposition");
+
+    // Ambil header Content-Disposition dari Python untuk nama file
+    const contentDisposition = pythonResponse.headers["content-disposition"];
+
+    // Salin header nama file ke respons Next.js
     if (contentDisposition) {
       headers.set("Content-Disposition", contentDisposition);
     } else {
+      // Fallback nama file jika tidak ada dari Python
       headers.set(
         "Content-Disposition",
-        `attachment; filename="Dokumen_${Date.now()}.docx"`
+        `attachment; filename="Dokumen_NextJs_${Date.now()}.docx"`
       );
     }
 
-    return new Response(arrayBuffer, {
+    // 2. Kesalahan KRITIS & Perbaikan: Mengembalikan Response.
+    // Anda harus mengembalikan objek Response baru, bukan hanya mendeklarasikan headers.
+    // Gunakan new Response() dari Web API, yang didukung oleh Next.js App Router.
+    return new Response(docData, {
       status: 200,
       headers: headers,
     });
   } catch (error) {
-    console.error("Error in Next.js API Route:", error);
+    // Penanganan error yang lebih detail
+    if (axios.isAxiosError(error) && error.response) {
+      console.error(
+        "Error response from Python API:",
+        error.response.status,
+        error.response.data.toString() // Konversi arraybuffer error ke string jika mungkin
+      );
+    } else {
+      console.error("Error in Next.js API Route:", error);
+    }
 
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Failed to generate document",
+        error:
+          "Failed to generate document via Python API. Check console logs.",
       },
       { status: 500 }
     );
